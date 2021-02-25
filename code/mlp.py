@@ -11,7 +11,7 @@ from layers import *
 class mlp(nn.Module):
 
 	def __init__(self, feature_dim, layer, hidden):
-		
+
 		super(mlp, self).__init__()
 
 		self.add_module( 'linear1', nn.Linear(feature_dim, hidden) )
@@ -20,33 +20,33 @@ class mlp(nn.Module):
 		if layer == 2:
 			self.add_module( 'linear2', nn.Linear(hidden, hidden) )
 			#self.add_module( 'bn2', nn.BatchNorm1d(hidden) )
-	
+
 		self.add_module( 'linear3', nn.Linear(hidden, 1) )
 
 		self.layer = layer
 		self.loss_fn = nn.MSELoss()
 
-		self._init_weights() 
+		self._init_weights()
 
 	def forward(self, x, weights = None):
 
 		if weights == None:
-			
+
 			hidden = F.relu( self._modules['linear1'](x) )
 			#out = F.tanh( self._modules['bn1'](out) )
 			#hidden = F.relu( self._modules['bn1']( self._modules['linear1'](x) ) )
-			
+
 			if self.layer == 2:
 				hidden = F.relu( self._modules['linear2']( hidden ) )
 				#out = F.tanh( self._modules['bn2'](out) )
 				#hidden = F.relu( self._modules['bn2']( self._modules['linear2']( hidden ) ) )
 
-			#out = self._modules['linear3']( hidden )	
+			#out = self._modules['linear3']( hidden )
 			#out = F.tanh( out )
 			out = self._modules['linear3']( hidden )
 
 		else:
-			
+
 			#hidden = F.tanh( linear(x, weights['linear1.weight'], weights['linear1.bias']) )
 			#out = batchnorm(out, weight = weights['bn1.weight'], bias = weights['bn1.bias'], momentum=1)
 			#hidden = linear(x, weights['linear1.weight'], weights['linear1.bias'])
@@ -81,11 +81,11 @@ class mlp(nn.Module):
 	def _init_weights(self):
 		# Set weights to Gaussian, biases to zero
 		torch.manual_seed(1337)
-		torch.cuda.manual_seed(1337)
-		torch.cuda.manual_seed_all(1337)
-		
+		#torch.cuda.manual_seed(1337)
+		#torch.cuda.manual_seed_all(1337)
+
 		#print 'init weights'
-		
+
 		for m in self.modules():
 			if isinstance(m, nn.BatchNorm1d):
 				m.weight.data.fill_(1)

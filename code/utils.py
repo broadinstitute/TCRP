@@ -13,7 +13,7 @@ def cut_data_into_pieces(feature, label):
 	data_list = []
 
 	for batch_feature, batch_label in data_loader:
-		data_list.append((batch_feature.cuda(), batch_label.cuda()))
+		data_list.append((batch_feature, batch_label))
 
 	return data_list
 

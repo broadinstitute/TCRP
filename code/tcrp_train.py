@@ -67,7 +67,7 @@ model_dic = args.model_dic + 'MODELS/' + drug + '/'
 
 if not os.path.exists(model_dic):
 	mkdir_cmd = 'mkdir -p ' + model_dic
-	os.system(mkdir_cmd) 
+	os.system(mkdir_cmd)
 # Load data
 #cv_feature_list, cv_label_list, meta_tissue_index_list, test_feature_list, test_label_list, test_tissue_list  = load_data_cell_line(tissue_map, drug, K)
 train_feature, train_label, tissue_index_list = load_data(tissue_map, drug, K, path = feature_dic)
@@ -101,4 +101,3 @@ c = np.asarray(best_train_corr_test_scorr_list).mean()
 d = np.asarray(best_train_scorr_test_scorr_list).mean()
 
 print 'PDTC best_train_loss_test_corr:', float('%.3f'%a), 'best_train_corr_test_corr', float('%.3f'%b), 'best_train_corr_test_scorr', float('%.3f'%c), 'best_train_scorr_test_scorr', float('%.3f'%d)
-

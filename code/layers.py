@@ -5,12 +5,12 @@ from torch.nn import functional as F
 
 '''
 Functional definitions of common layers
-Useful for when weights are exposed rather 
+Useful for when weights are exposed rather
 than being contained in modules
 '''
 
 def linear(input, weight, bias):
-	#return F.linear(input, weight.cuda(), bias.cuda())
+	#return F.linear(input, weight(), bias())
 	return F.linear(input, weight, bias)
 
 def relu(input):
@@ -20,10 +20,10 @@ def batchnorm(input, weight=None, bias=None, running_mean=None, running_var=None
 	''' momentum = 1 restricts stats to the current mini-batch '''
 	# This hack only works when momentum is 1 and avoids needing to track running stats
 	# by substuting dummy variables
-	#running_mean = torch.zeros(np.prod(np.array(input.data.size()[1]))).cuda()
-	#running_var = torch.ones(np.prod(np.array(input.data.size()[1]))).cuda()
+	#running_mean = torch.zeros(np.prod(np.array(input.data.size()[1])))()
+	#running_var = torch.ones(np.prod(np.array(input.data.size()[1])))()
 
-	running_mean = torch.zeros(np.prod(np.array(input.data.size()[1]))).cuda()
-	running_var = torch.ones(np.prod(np.array(input.data.size()[1]))).cuda()
-	
+	running_mean = torch.zeros(np.prod(np.array(input.data.size()[1])))()
+	running_var = torch.ones(np.prod(np.array(input.data.size()[1])))()
+
 	return F.batch_norm(input, running_mean, running_var, weight, bias, training, momentum, eps)

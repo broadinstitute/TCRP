@@ -9,8 +9,8 @@ from scipy import stats
 def forward_pass(net, in_, target, weights=None):
 	# Forward in_ through the net, return loss and output
 
-	input_var = Variable(in_).cuda()
-	target_var = Variable(target).cuda()
+	input_var = Variable(in_)
+	target_var = Variable(target)
 	
 	# Second output is hidden
 	out, _ = net.net_forward(input_var, weights)
@@ -24,9 +24,9 @@ def evaluate_new_PDX(net, loader, train_flag, weights=None):
 	#evaluate the net on the data in the loader
 	net.eval()
 
-	test_predict = torch.zeros(0,0).cuda()
-	test_label = torch.zeros(0,0).cuda()
-	cat_test_label = torch.zeros(0,0).cuda()
+	test_predict = torch.zeros(0,0)
+	test_label = torch.zeros(0,0)
+	cat_test_label = torch.zeros(0,0)
 	total_loss = 0
 
 	for i, (in_, target, cat_target) in enumerate(loader):
@@ -65,8 +65,8 @@ def evaluate_new(net, loader, train_flag, weights=None):
 	#evaluate the net on the data in the loader
 	net.eval()
 
-	test_predict = torch.zeros(0,0).cuda()
-	test_label = torch.zeros(0,0).cuda()
+	test_predict = torch.zeros(0,0)
+	test_label = torch.zeros(0,0)
 	total_loss = 0
 
 	for i, (in_, target) in enumerate(loader):
@@ -99,8 +99,8 @@ def evaluate_cv(net, loader, weights=None):
 	#evaluate the net on the data in the loader
 	net.eval()
 
-	test_predict = torch.zeros(0,0).cuda()
-	test_label = torch.zeros(0,0).cuda()
+	test_predict = torch.zeros(0,0)
+	test_label = torch.zeros(0,0)
 	total_loss = 0
 	#print 'In size evaluate'
 
@@ -127,8 +127,8 @@ def evaluate(net, loader, train_flag, weights=None):
 	#evaluate the net on the data in the loader
 	net.eval()
 	
-	test_predict = torch.zeros(0,0).cuda()
-	test_label = torch.zeros(0,0).cuda()	
+	test_predict = torch.zeros(0,0)
+	test_label = torch.zeros(0,0)	
 	total_loss = 0
 	#print 'In size evaluate'
 
