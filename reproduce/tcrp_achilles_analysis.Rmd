@@ -1,0 +1,92 @@
+---
+title: "TCRP Achilles Analysis"
+author: "William Colgan"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  github_document:
+  html_notebook:
+    theme: united
+    toc: yes
+    toc_float: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7, cache = T)
+
+library(tidyverse)
+library(viridis)
+library(ggrepel)
+```
+
+# Purpose
+
+To analyze the results from our attempt to reproduce Fig. 2a of *Learning predictive models of drug response that translate across biological contexts. Nature Cancer*
+
+```{r, include = F}
+tcrp <- read_csv("./results/tcrp_achilles_results.csv")
+tcrp_cor <- tcrp %>% group_by(gene,K) %>% summarise(test_cor_gene_mean = mean(test_cor_mean),test_cor_gene_sd = sd(test_cor_mean)) %>% 
+  mutate(method = "TCRP")
+rf <- read_csv("./results/k_shot_rf_achilles_results.csv")
+rf_cor <- rf[grepl("mean correlation|Gene",names(rf))] %>% gather(key = "K",value = "test_cor_gene_mean",-Gene) %>% mutate(K = word(K))
+rf_sd <- rf[grepl("stddev|Gene",names(rf))] %>% gather(key = "K",value = "test_cor_gene_sd",-Gene) %>% mutate(K = word(K))
+rf_cor %<>% left_join(rf_sd,by = c("Gene","K")) %>% mutate(method = "Few_Shot_RF", gene = Gene, K = as.numeric(K)) %>%  select(-Gene)
+rf_standard <- read_csv("./results/regular_rf_achilles_results.csv") %>% transmute(gene = Gene, test_cor_gene_mean = Correlation,method = "Standard_RF")
+```
+
+# Test correlation by K
+
+Plots includes 464 genes that kill at least one cell line. Points represent average across 5 trials for TCRP and 10 trials for few shot random forest for each gene and K value
+
+```{r fig.height= 5}
+rbind(tcrp_cor,rf_cor) %>% ggplot(aes(x = as.factor(K),y = test_cor_gene_mean,fill = method)) + geom_boxplot() + xlab("K")
+```
+
+```{r}
+tcrp_cor %>% left_join(rf_cor,by = c("gene","K"),suffix = c("_tcrp","_rf")) %>% 
+  ggplot(aes(test_cor_gene_mean_tcrp,test_cor_gene_mean_rf,color = as.factor(K))) + 
+  geom_point(size = .5) + geom_abline() + labs(color = "K") + lims(x = c(-.2,.6), y = c(-.2,.6))
+```
+
+# HNF1B
+
+The paper claims an HNF1B prediction performance of .6 for TCRP and .19 for random forest.
+
+```{r fig.height= 4}
+rbind(tcrp_cor,rf_cor) %>% filter(gene == "HNF1B") %>% 
+  ggplot(aes(x = as.factor(K),y = test_cor_gene_mean,color = method,group = method)) + geom_line() + geom_point(size = 4) + xlab("K") 
+```
+
+# Performance relative to standard random forest
+
+Standard random forest uses the same features but uses standard cross validation. K value is fixed at 5 for both TCRP and few shot random forest.
+
+## Few shot vs standard RF
+
+```{r fig.height= 5}
+bind_rows(rf_standard,rf_cor %>% filter(K == 5)) %>% ggplot(aes(method,test_cor_gene_mean,fill = method)) + geom_boxplot()
+```
+
+```{r}
+df <- rf_standard %>% left_join(rf_cor %>% filter(K == 5),by = "gene",suffix = c("_rf_standard","_rf_5_shot"))
+df %>% ggplot(aes(test_cor_gene_mean_rf_5_shot,test_cor_gene_mean_rf_standard)) + geom_point() + 
+  geom_text_repel(data = df %>% filter(abs(test_cor_gene_mean_rf_5_shot - test_cor_gene_mean_rf_standard) > .3),aes(label = gene)) +
+  geom_abline() + lims(x = c(-.3,.8), y = c(-.3,.8))
+``` 
+
+## TCRP vs standard RF
+
+```{r fig.height= 5}
+bind_rows(rf_standard,tcrp_cor %>% filter(K == 5)) %>% ggplot(aes(method,test_cor_gene_mean,fill = method)) + geom_boxplot()
+```
+
+```{r}
+df <- rf_standard %>% left_join(tcrp_cor %>% filter(K == 5),by = "gene",suffix = c("_rf_standard","_tcrp_5_shot"))
+df %>% ggplot(aes(test_cor_gene_mean_tcrp_5_shot,test_cor_gene_mean_rf_standard)) + geom_point() + 
+  geom_text_repel(data = df %>% filter(abs(test_cor_gene_mean_tcrp_5_shot - test_cor_gene_mean_rf_standard) > .3),aes(label = gene)) +
+  geom_abline() + lims(x = c(-.3,.8), y = c(-.3,.8))
+``` 
+
+
+

@@ -87,7 +87,7 @@ results_test_cor_mean_list = []
 
 for drug in args.genes:
 	print(drug)
-	for K in range(1,10):
+	for K in range(1,10,2):
 		for t in range(args.trials_for_each_K):
 
 			if(args.fix_lineage_selection_issue):

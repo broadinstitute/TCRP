@@ -54,7 +54,7 @@ def get_observed_data_loader(feature, label, tissue_index_list, K, batch_size, t
 		if(fix_train_set_issue):
 			train_sampled_index_list +=	sub_list
 		else:
-			#Select K samples from each lineage. is is invalid because it means diffent K values are not comparable.
+			#Select K samples from each lineage. This is invalid because it means different K values are not comparable.
 			train_sampled_index_list +=	sub_list[0:K]
 
 	for tissue_index in test_tissue_index_list:
@@ -65,7 +65,7 @@ def get_observed_data_loader(feature, label, tissue_index_list, K, batch_size, t
 		if(fix_train_set_issue):
 			test_sampled_index_list += sub_list
 		else:
-			#Select K samples from each lineage. is is invalid because it means diffent K values are not comparable.
+			#Select K samples from each lineage. This is invalid because it means different K values are not comparable.
 			test_sampled_index_list += sub_list[0:K]
 
 
