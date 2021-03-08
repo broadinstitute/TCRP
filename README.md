@@ -49,6 +49,8 @@ The random forest model with a traditional train/test paradigm can be reproduced
 
 ```python run_random_forest_with_feature_selection_regular_full_run.py```
 
+These scripts run random forest models on the features filtered from the previous section (see "Data" section). Briefly, features are filtered in as close a way as possible to the Ideker paper.
+
 # TCRP Model
 
 ## Modifications
