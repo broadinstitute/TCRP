@@ -21,17 +21,19 @@ To prepare the data matricies as input to the Random Forest and TCRP pipelines, 
 
 ```python preprocess_data.py```
 
-You may need to tweak the filepaths of the four input matrices to your situation. Also make sure you have the required libraries installed. You might notice that this code takes some time to run, as I (David) didn't optimize it.
+You may need to tweak the filepaths of the four input matrices to your situation. Also make sure you have the required libraries installed. You might notice that this code takes some time to run, as I (David) didn't optimize it. Briefly, this script defines all lineages to fewshot over, cell line to lineage mappings, gets the gene KOs to evaluate over (defined as gene KOs with at least one cell line that has CERES score of at least +- 6 std from the mean of all cell lines for that gene), removes expression features with bottom 10th percentile stdev, defines all genes with expression correlation > 0.4 to the expression of each gene KO (co-expression features as defined in the paper), and processes the CCLE mutations file to exclude silent mutations, one hot encode the remaining mutations into a feature matrix (as described in paper, 1 for a gene with >= 1 mutation, 0 otherwise), and exclude any gene with less than 10 cell lines with >= 1 mutation for that gene (as described in the paper). 
 
-Then, you will need create a pkl file mapping gene KOs to their set of PPI partners, to include those features when predicting over. We have a script to do this that also includes a gene KO's paralogs, so its not exactly what is described in the TCRP paper, but it should be fairly close as a reproduction.
+Then, you will need create a pkl file mapping gene KOs to their set of PPI partners (since TCRP paper included these as well), to include those features when predicting over. We have a script to do this that also includes a gene KO's paralogs and the gene KO itself, so its not exactly what is described in the TCRP paper, but it should be fairly close as a reproduction.
 
 Our script requires use of our internal data management tool, Taiga, so you may not be able to run it. However, if you would like to try, run
 
 ```python get_ppi_features_dict.py```
 
-Then, make the final dictionary mapping gene KOs to features to use for that gene KO by running
+Then, make the final dictionary mapping gene KOs to features to use for that gene KO. You can do this by running
 
 ```python generate_feature_dict_pkl.py```
+
+This script simply collates all the data generated from the previous steps into a single dictionary mapping gene KOs to the list of features to use to simplify things for downstream scripts.
 
 The code contains comments that should help you understand what is happening at each stage
 
