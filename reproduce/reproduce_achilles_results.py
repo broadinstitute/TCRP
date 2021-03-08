@@ -40,7 +40,7 @@ meta_batch_size = 32
 #parser.add_argument('--inner_batch_size', type=int, default=10, help='Batch size for each individual learning job')
 inner_batch_size = 32
 #parser.add_argument('--num_updates', type=int, default=30, help='Number of training epochs')
-num_updates = 15 #set back to 30
+num_updates = 200 # David changed this line to match with paper (they trained for 200 epochs)
 #parser.add_argument('--num_inner_updates', type=int, default=1, help='Initial learning rate')
 num_inner_updates = 1
 #parser.add_argument('--num_trials', type=int, default=50, help='Number of trials for unseen tissue')

@@ -1,3 +1,6 @@
+# This code is all CDS code
+# Author: David Wu (dwu@broadinstitute.org)
+
 import collections
 import pickle
 from taigapy import TaigaClient
