@@ -20,10 +20,6 @@ library(viridis)
 library(ggrepel)
 ```
 
-# Purpose
-
-To analyze the results from our attempt to reproduce Fig. 2a of *Learning predictive models of drug response that translate across biological contexts. Nature Cancer*
-
 ```{r, include = F}
 tcrp <- read_csv("./results/tcrp_achilles_results.csv")
 tcrp_cor <- tcrp %>% group_by(gene,K) %>% summarise(test_cor_gene_mean = mean(test_cor_mean),test_cor_gene_sd = sd(test_cor_mean)) %>% 
@@ -37,7 +33,7 @@ rf_standard <- read_csv("./results/regular_rf_achilles_results.csv") %>% transmu
 
 # Test correlation by K
 
-Plots includes 464 genes that kill at least one cell line. Points represent average across 5 trials for TCRP and 10 trials for few shot random forest for each gene and K value
+Plots includes 464 genes with at least one 6 sigma outlier cell line. Points represent average across 5 trials for TCRP and 10 trials for few shot random forest for each gene and K value.
 
 ```{r fig.height= 5}
 rbind(tcrp_cor,rf_cor) %>% ggplot(aes(x = as.factor(K),y = test_cor_gene_mean,fill = method)) + geom_boxplot() + xlab("K")
@@ -51,7 +47,7 @@ tcrp_cor %>% left_join(rf_cor,by = c("gene","K"),suffix = c("_tcrp","_rf")) %>%
 
 # HNF1B
 
-The paper claims an HNF1B prediction performance of .6 for TCRP and .19 for random forest.
+The paper reports HNF1B prediction performance of .6 for TCRP and .19 for random forest
 
 ```{r fig.height= 4}
 rbind(tcrp_cor,rf_cor) %>% filter(gene == "HNF1B") %>% 
@@ -60,7 +56,7 @@ rbind(tcrp_cor,rf_cor) %>% filter(gene == "HNF1B") %>%
 
 # Performance relative to standard random forest
 
-Standard random forest uses the same features but uses standard cross validation. K value is fixed at 5 for both TCRP and few shot random forest.
+Standard random forest uses the same features but uses standard five-fold cross validation. K value is fixed at 5 for both TCRP and few shot random forest.
 
 ## Few shot vs standard RF
 

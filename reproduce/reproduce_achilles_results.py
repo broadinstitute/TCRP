@@ -87,14 +87,14 @@ results_test_cor_mean_list = []
 
 for drug in args.genes:
 	print(drug)
-	for K in range(1,10,2):
+	for K in range(1,10):
 		for t in range(args.trials_for_each_K):
 
 			if(args.fix_lineage_selection_issue):
 				# Hold out lineages with at least min_lines_per_lineage cell lines in them
 				cv_feature_list, cv_label_list, meta_tissue_index_list, test_feature_list, test_label_list, test_tissue_list  = load_data_cell_line(tissue_map, drug, args.min_lines_per_lineage, data_path)
 			else:
-				# Hold out lineages with at least K cell lines in them. This is invalid because it means different K values are not comparable.
+				# Hold out lineages with at least K cell lines in them
 				cv_feature_list, cv_label_list, meta_tissue_index_list, test_feature_list, test_label_list, test_tissue_list  = load_data_cell_line(tissue_map, drug, K, data_path)
 
 			# Following Code from tcrp_cv.py

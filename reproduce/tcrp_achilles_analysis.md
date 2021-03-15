@@ -1,20 +1,14 @@
 TCRP Achilles Analysis
 ================
 William Colgan
-26 February 2021
-
-# Purpose
-
-To analyze the results from our attempt to reproduce Fig. 2a of
-*Learning predictive models of drug response that translate across
-biological contexts. Nature Cancer*
+15 March 2021
 
 # Test correlation by K
 
-Plots includes 464 genes that kill at least one cell line. Points
-represent average across 5 trials for TCRP and 10 trials for few shot
-random forest for each gene and K
-value
+Plots includes 464 genes with at least one 6 sigma outlier cell line.
+Points represent average across 5 trials for TCRP and 10 trials for few
+shot random forest for each gene and K
+value.
 
 ![](tcrp_achilles_analysis_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -22,16 +16,17 @@ value
 
 # HNF1B
 
-The paper claims an HNF1B prediction performance of .6 for TCRP and .19
+The paper reports HNF1B prediction performance of .6 for TCRP and .19
 for random
-forest.
+forest
 
 ![](tcrp_achilles_analysis_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 # Performance relative to standard random forest
 
-Standard random forest uses the same features but uses standard cross
-validation. K value is fixed at 5 for both TCRP and few shot random
+Standard random forest uses the same features but uses standard
+five-fold cross validation. K value is fixed at 5 for both TCRP and few
+shot random
 forest.
 
 ## Few shot vs standard RF
