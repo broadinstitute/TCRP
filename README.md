@@ -59,6 +59,7 @@ These scripts run random forest models on the features filtered from the previou
 
 * To get the TCRP model running locally we removed the CUDA dependency by deleting all .cuda() calls.
 * In tcrp_cv.py the number of lineages selected for cross validation depends on K. We added a fix_lineage_selection_issue flag which allows us select lineages based on min_lines_per_lineage instead. To reproduce the results we set min_lines_per_lineage to 15 similar to the paper.
+* To test multiple genes and K values we wrote reproduce_achilles_results.py which is based on tcrp_cv.py. This script generates the required files for data_loading.py and then loops over genes (--genes), K values (1:10), and trials (--trials_for_each_K). The inside of this loop is identical to tcrp_cv.py.
 
 ## Reproducing results
 
