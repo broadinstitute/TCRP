@@ -37,7 +37,7 @@ This script simply collates all the data generated from the previous steps into 
 
 The code contains comments that should help you understand what is happening at each stage
 
-The prepared matrices to run reproduce_achilles_results.py can be downloaded [here]("https://drive.google.com/drive/folders/1Hyn65w7UyxCEsTUE2U1yk4JhcavAygR6?usp=sharing").
+The prepared matrices to run reproduce_achilles_results.py can be downloaded: https://drive.google.com/drive/folders/1Hyn65w7UyxCEsTUE2U1yk4JhcavAygR6?usp=sharing
 
 # Random Forest
 
@@ -51,7 +51,7 @@ The random forest model with a traditional train/test paradigm can be reproduced
 
 ```python run_random_forest_with_feature_selection_regular_full_run.py```
 
-These scripts run random forest models on the features filtered from the previous section (see "Data" section). Briefly, features are filtered in as close a way as possible to the Ideker paper.
+These scripts run random forest models on the features filtered from the previous section (see "Data" section). Briefly, features are filtered in as close a way as possible to the Ideker paper. You may need to do a quick conversion from the hdf5 to csv files for the input data for these methods to run.
 
 # TCRP Model
 
